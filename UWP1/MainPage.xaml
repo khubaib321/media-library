@@ -39,19 +39,22 @@
                                     Background="LightGray" 
                                     HorizontalAlignment="Right"
                                     CommandParameter="{x:Bind getLocation()}"/>
-                            <StackPanel
-                                Margin="20,0,0,0"
-                                Grid.Column="1"
-                                Orientation="Vertical"
-                                HorizontalAlignment="Left">
+                            <StackPanel Margin="20,0,0,0"
+                                        Grid.Column="1"
+                                        Orientation="Vertical"
+                                        HorizontalAlignment="Left">
                                 <TextBlock Text="{x:Bind getName()}"
                                            FontSize="18"
                                            Foreground="White"
-                                           FontWeight="SemiBold" />
+                                           FontWeight="SemiBold"
+                                           MaxWidth="200"
+                                           TextWrapping="WrapWholeWords"/>
                                 <TextBlock Text="{x:Bind getLocation()}" 
                                            FontSize="12"
                                            Foreground="LightGray"
-                                           Opacity="1" />
+                                           Opacity="1"
+                                           MaxWidth="200"
+                                           TextWrapping="WrapWholeWords"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -66,11 +69,11 @@
 
             <Grid VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Button Content="Save and Close" Click="SaveAndClose" Margin="0,0,0 0" Foreground="White" Background="Black" ClickMode="Release"/>
-                <Button Content="Reset Background" Click="ResetColor" Foreground="White" Background="Black" Grid.Column="2" ClickMode="Release"/>
+                <Button Content="Reset Background" Click="ResetColor" Foreground="White" Background="Black" Grid.Column="1" ClickMode="Release"/>
             </Grid>
 
         </ListView>
