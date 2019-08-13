@@ -88,13 +88,7 @@ namespace UWP1
             }
             
             ListViewItem lvItem = (ListViewItem)e.AddedItems.First();
-            if (this.changeGV1Background(lvItem.Name))
-            {
-                // nothing
-            }
-            else {
-                Debug.WriteLine("Couldn't get value against key => " + lvItem.Name);
-            }
+            this.changeGV1Background(lvItem.Name);
         }
 
         private bool changeGV1Background(String colorName)
