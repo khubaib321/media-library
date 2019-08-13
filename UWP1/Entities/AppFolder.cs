@@ -48,9 +48,8 @@ namespace UWP1.Entities
                 return folderList;
 
             foreach(String location in locations)
-            {
                 folderList.RemoveAll((appFolder) => appFolder.getLocation() == location);
-            }
+
             return folderList;
         }
 
