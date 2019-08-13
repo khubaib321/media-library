@@ -11,8 +11,8 @@
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <ListView x:Load="True" x:Name="LV1" Background="Crimson" IsItemClickEnabled="True" SelectionChanged="LV1_SelectionChanged" VerticalAlignment="Stretch" >
