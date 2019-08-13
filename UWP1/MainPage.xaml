@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="UWP1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:entities="using:UWP1.Entities"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListView x:Load="True" x:Name="LV1" Background="Crimson" IsItemClickEnabled="True" SelectionChanged="LV1_SelectionChanged" VerticalAlignment="Stretch" >
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <Button Content="Add New Folder" Click="OpenFolderAsync" Foreground="White" Background="Black" />
+
+            <Grid x:Name="GV_SavedFolders">
+                <ListView Name="GV_SavedFolders_LV1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="entities:AppFolder">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind getName()}"
+                                           FontSize="18"
+                                           Foreground="White"
+                                           FontWeight="SemiBold" />
+                                <TextBlock Text="{x:Bind getLocation()}" 
+                                           FontSize="12"
+                                           Foreground="LightGray"
+                                           Opacity="0.7" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            
+            <ListViewItem x:Name="red" Content="Red"/>
+            <ListViewItem x:Name="green" Content="Green"/>
+            <ListViewItem x:Name="blue" Content="Blue"/>
+            <ListViewItem x:Name="purple" Content="Purple"/>
+            <ListViewItem x:Name="black" Content="Black" />
+
+            <Grid VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Save and Close" Click="SaveAndClose" Margin="0,0,0 0" Foreground="White" Background="Black" ClickMode="Release"/>
+                <Button Content="Reset Background" Click="ResetColor" Foreground="White" Background="Black" Grid.Column="2" ClickMode="Release"/>
+            </Grid>
+
+        </ListView>
+
+        <GridView Name="GV1" SelectionChanged="GV1_SelectionChanged" Background="BlueViolet" Grid.Column="2">
+        </GridView>
+
+    </Grid>
+</Page>
