@@ -60,12 +60,12 @@ namespace UWP1.Helpers
 
         private bool isRegisterable(String propertyName)
         {
-            return propertyName.Count() > 0 && !this.storables.Contains(propertyName);
+            return !String.IsNullOrEmpty(propertyName) && !this.storables.Contains(propertyName);
         }
 
         private bool isStorable(String propertyName)
         {
-            return this.storables.Contains(propertyName);
+            return !String.IsNullOrEmpty(propertyName) && this.storables.Contains(propertyName);
         }
 
         public bool prepareForSave(Dictionary<String, object> savables)

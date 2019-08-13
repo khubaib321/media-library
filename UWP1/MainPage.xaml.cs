@@ -59,7 +59,8 @@ namespace UWP1
                 {
                     // create new AppFolder for each location
                     foreach (String location in savedFolderLocations)
-                        this.openedAppFolders.Add(new AppFolder(location));
+                        if (!String.IsNullOrEmpty(location))
+                            this.openedAppFolders.Add(new AppFolder(location));
                 }
             }
             this.refreshOpenedFolders();
@@ -102,11 +103,6 @@ namespace UWP1
                 return true;
             }
             return false;
-        }
-
-        private void GV1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private void ResetColor(object sender, RoutedEventArgs e)
@@ -155,5 +151,12 @@ namespace UWP1
             this.appDataStorage.prepareForSave(this.saveData);
         }
 
+        private void RemoveFolder(object sender, RoutedEventArgs e)
+        {
+            List<String> foldersToRemove = new List<string>();
+            foldersToRemove.Add((sender as Button).CommandParameter as String);
+            this.openedAppFolders = AppFolder.findAndRemoveFolders(this.openedAppFolders, foldersToRemove);
+            this.refreshOpenedFolders();
+        }
     }
 }

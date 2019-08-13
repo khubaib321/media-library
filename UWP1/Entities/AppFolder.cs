@@ -42,5 +42,17 @@ namespace UWP1.Entities
             return folderLocations;
         }
 
+        public static List<AppFolder> findAndRemoveFolders(List<AppFolder> folderList, List<String> locations)
+        {
+            if (locations.Count == 0)
+                return folderList;
+
+            foreach(String location in locations)
+            {
+                folderList.RemoveAll((appFolder) => appFolder.getLocation() == location);
+            }
+            return folderList;
+        }
+
     }
 }

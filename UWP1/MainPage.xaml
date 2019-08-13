@@ -25,11 +25,25 @@
 
             <Button Content="Add New Folder" Click="OpenFolderAsync" Foreground="White" Background="Black" />
 
-            <Grid x:Name="GV_SavedFolders">
-                <ListView Name="GV_SavedFolders_LV1">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="entities:AppFolder">
-                            <StackPanel>
+            <ListView Name="GV_SavedFolders_LV1">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="entities:AppFolder">
+                        <Grid x:Name="GV_SavedFolders">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="X"
+                                    Click="RemoveFolder" 
+                                    Foreground="Black"
+                                    Background="LightGray" 
+                                    HorizontalAlignment="Right"
+                                    CommandParameter="{x:Bind getLocation()}"/>
+                            <StackPanel
+                                Margin="20,0,0,0"
+                                Grid.Column="1"
+                                Orientation="Vertical"
+                                HorizontalAlignment="Left">
                                 <TextBlock Text="{x:Bind getName()}"
                                            FontSize="18"
                                            Foreground="White"
@@ -37,13 +51,13 @@
                                 <TextBlock Text="{x:Bind getLocation()}" 
                                            FontSize="12"
                                            Foreground="LightGray"
-                                           Opacity="0.7" />
+                                           Opacity="1" />
                             </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-            
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
             <ListViewItem x:Name="red" Content="Red"/>
             <ListViewItem x:Name="green" Content="Green"/>
             <ListViewItem x:Name="blue" Content="Blue"/>
@@ -61,8 +75,7 @@
 
         </ListView>
 
-        <GridView Name="GV1" SelectionChanged="GV1_SelectionChanged" Background="BlueViolet" Grid.Column="2">
-        </GridView>
+        <GridView Name="GV1" Background="BlueViolet" Grid.Column="1"/>
 
     </Grid>
 </Page>
