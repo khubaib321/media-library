@@ -11,7 +11,6 @@ namespace UWP1.Helpers
         private List<String> storables = new List<string>();
         private Dictionary<String, object> temporaryData = new Dictionary<string, object>();
         private Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-        private Windows.Storage.ApplicationDataCompositeValue composite = new Windows.Storage.ApplicationDataCompositeValue();
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
         private bool save()
@@ -35,18 +34,10 @@ namespace UWP1.Helpers
              * This makes sure we won't have any non existent property access
              */
             foreach(String savableProperty in this.storables)
-            {
                 this.temporaryData[savableProperty] = null;
-            }
             // now load stored values in local store
             foreach (KeyValuePair<String, object> keyValuePair in this.localSettings.Values)
-            {
                 this.temporaryData[keyValuePair.Key] = keyValuePair.Value;
-            }
-            foreach (KeyValuePair<String, object> keyValuePair in this.composite)
-            {
-                this.temporaryData[keyValuePair.Key] = keyValuePair.Value;
-            }
             return true;
         }
 
