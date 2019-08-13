@@ -51,9 +51,7 @@ namespace UWP1.Helpers
             foreach(String propertyName in propertyNames)
             {
                 if (this.isRegisterable(propertyName))
-                {
                     this.storables.Add(propertyName);
-                }
             }
             return;
         }
@@ -79,12 +77,9 @@ namespace UWP1.Helpers
             {
                 object savedValue = null;
                 this.temporaryData.TryGetValue(savable.Key, out savedValue);
-                if (savedValue == savable.Value ||
-                    !this.isStorable(savable.Key))
-                {
+                if (savedValue == savable.Value || !this.isStorable(savable.Key))
                     // if previous value has not been changed or it's key is not registered, then skip it
                     continue;
-                }
                 this.temporaryData[savable.Key] = savable.Value;
                 // uncommit temporary save data. changes can be detected here.
                 this.committedForSave = false;
@@ -121,9 +116,7 @@ namespace UWP1.Helpers
                 return new Dictionary<string, object>();
             }
             if (this.load())
-            {
                 return this.temporaryData;
-            }
             Debug.WriteLine("Failed to fetch app data.");
             return new Dictionary<string, object>();
         }
