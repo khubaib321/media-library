@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace UWP1.Entities
 {
     class AppFolder
     {
+        public static readonly List<String> allowedFileTypes = new List<string>
+        {
+            ".wmi",
+            ".avi",
+            ".mp4",
+            ".mkv",
+        };
         private DirectoryInfo directoryInfo;
 
         public AppFolder(String location)
@@ -51,6 +59,17 @@ namespace UWP1.Entities
                 folderList.RemoveAll((appFolder) => appFolder.getLocation() == location);
 
             return folderList;
+        }
+
+        public async Task<List<String>> GetFiles()
+        {
+            // use storage folder to get all files path (full name basically)
+            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(this.directoryInfo.FullName);
+            IReadOnlyList<StorageFile> fileList = await folder.GetFilesAsync();
+            List<String> allFiles = new List<string>();
+            foreach (StorageFile file in fileList)
+                allFiles.Add(file.Path);
+            return allFiles;
         }
 
     }

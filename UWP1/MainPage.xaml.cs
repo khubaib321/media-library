@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using UWP1.Helpers;
 using UWP1.Entities;
+using System.IO;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -157,6 +158,39 @@ namespace UWP1
             foldersToRemove.Add((sender as Button).CommandParameter as String);
             this.openedAppFolders = AppFolder.findAndRemoveFolders(this.openedAppFolders, foldersToRemove);
             this.refreshOpenedFolders();
+        }
+
+        private void GV_SavedFolders_LV1_LoadAndDisplayFiles(object sender, SelectionChangedEventArgs e)
+        {
+            // empty current grid view
+            this.GV1.ItemsSource = null;
+            if ((AppFolder)(sender as ListView).SelectedItem == null)
+                return;
+
+            AppFolder selectedFolder = (AppFolder) (sender as ListView).SelectedItem;
+            this.loadFilesIntoGrid(selectedFolder);
+        }
+
+        private async void loadFilesIntoGrid(AppFolder appFolder)
+        {
+            // get files from app folder and display in grid view
+            // grid view users vlc media element library to play videos
+            List<String> allFiles = await appFolder.GetFiles();
+            List<AppFile> appFiles = new List<AppFile>();
+            foreach(String location in allFiles)
+            {
+                if (AppFolder.allowedFileTypes.Contains(new FileInfo(location).Extension))
+                {
+                    AppFile newAppFile = new AppFile(location);
+                    // if (await newAppFile.loadVideoProps())
+                    // some issue in commented if statement above. causing ui to stutter
+                    // when fixed change text block binding in MainPage.xaml to getNameWithDuration
+                    appFiles.Add(newAppFile);
+                }
+            }
+
+            this.GV1.ItemsSource = null;
+            this.GV1.ItemsSource = appFiles;
         }
     }
 }

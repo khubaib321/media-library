@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:entities="using:UWP1.Entities"
+    xmlns:vlc="using:VLC"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -25,10 +26,12 @@
 
             <Button Content="Add New Folder" Click="OpenFolderAsync" Foreground="White" Background="Black" />
 
-            <ListView Name="GV_SavedFolders_LV1">
+            <ListView Name="GV_SavedFolders_LV1"
+                      IsItemClickEnabled="True"
+                      SelectionChanged="GV_SavedFolders_LV1_LoadAndDisplayFiles" >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="entities:AppFolder">
-                        <Grid x:Name="GV_SavedFolders">
+                        <Grid x:Name="GV_SavedFolders" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -42,7 +45,7 @@
                             <StackPanel Margin="20,0,0,0"
                                         Grid.Column="1"
                                         Orientation="Vertical"
-                                        HorizontalAlignment="Left">
+                                        HorizontalAlignment="Left" >
                                 <TextBlock Text="{x:Bind getName()}"
                                            FontSize="18"
                                            Foreground="White"
@@ -78,7 +81,35 @@
 
         </ListView>
 
-        <GridView Name="GV1" Background="BlueViolet" Grid.Column="1"/>
+        <GridView Name="GV1"
+                  Padding="30"
+                  Grid.Column="1"
+                  Background="BlueViolet">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="entities:AppFile">
+                    <StackPanel Margin="0,0,0,10"
+                                Orientation="Vertical" >
+                        <!--<Image Source="Assets/Square150x150Logo.scale-200.png" Width="300" Height="300"/>-->
+                        <vlc:MediaElement AreTransportControlsEnabled="True"
+                                          HardwareAcceleration="True"
+                                          AutoPlay="False"
+                                          Width="360"
+                                          Height="240"
+                                          Source="{x:Bind getLocation()}">
+                            <vlc:MediaElement.TransportControls>
+                                <vlc:MediaTransportControls Opacity="0.8"
+                                                            AutoHide="True"
+                                                            IsFullWindowEnabled="True"
+                                                            IsCompactOverlayEnabled="False"
+                                                            IsFullWindowButtonVisible="True"
+                                                            IsDeinterlaceModeButtonEnabled="False"/>
+                            </vlc:MediaElement.TransportControls>
+                        </vlc:MediaElement>
+                        <TextBlock Text="{x:Bind getName(x:False)}" TextAlignment="Center" TextWrapping="WrapWholeWords"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
 
     </Grid>
 </Page>
