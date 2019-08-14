@@ -91,18 +91,22 @@
                                 Orientation="Vertical" >
                         <!--<Image Source="Assets/Square150x150Logo.scale-200.png" Width="300" Height="300"/>-->
                         <vlc:MediaElement AreTransportControlsEnabled="True"
-                                          HardwareAcceleration="True"
+                                          HardwareAcceleration="False"
                                           AutoPlay="False"
-                                          Width="360"
-                                          Height="240"
+                                          Width="540"
+                                          Height="360"
+                                          PosterSource=""
                                           Source="{x:Bind getLocation()}">
                             <vlc:MediaElement.TransportControls>
-                                <vlc:MediaTransportControls Opacity="0.8"
+                                <vlc:MediaTransportControls Opacity="0.7"
                                                             AutoHide="True"
+                                                            IsStopEnabled="True"
+                                                            IsStopButtonVisible="True"
                                                             IsFullWindowEnabled="True"
-                                                            IsCompactOverlayEnabled="False"
+                                                            IsRepeatEnabled="True"
+                                                            IsRepeatButtonVisible="True"
                                                             IsFullWindowButtonVisible="True"
-                                                            IsDeinterlaceModeButtonEnabled="False"/>
+                                                            IsCompactOverlayButtonVisible="False"/>
                             </vlc:MediaElement.TransportControls>
                         </vlc:MediaElement>
                         <TextBlock Text="{x:Bind getName(x:False)}" TextAlignment="Center" TextWrapping="WrapWholeWords"/>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
 using Windows.Storage;
 using System.Threading.Tasks;
