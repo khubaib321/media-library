@@ -60,14 +60,17 @@ namespace UWP1.Entities
             return folderList;
         }
 
-        public async Task<List<String>> GetFiles()
+        public async Task<List<AppFile>> GetFiles()
         {
             // use storage folder to get all files path (full name basically)
             StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(this.directoryInfo.FullName);
             IReadOnlyList<StorageFile> fileList = await folder.GetFilesAsync();
-            List<String> allFiles = new List<string>();
+            List<AppFile> allFiles = new List<AppFile>();
             foreach (StorageFile file in fileList)
-                allFiles.Add(file.Path);
+            {
+                if (AppFolder.allowedFileTypes.Contains(new FileInfo(file.Path).Extension))
+                    allFiles.Add(new AppFile(file.Path));
+            }
             return allFiles;
         }
 

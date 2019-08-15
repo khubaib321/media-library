@@ -2,6 +2,9 @@
 using System.IO;
 using Windows.Storage;
 using System.Threading.Tasks;
+using Windows.Storage.FileProperties;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace UWP1.Entities
 {
@@ -9,6 +12,8 @@ namespace UWP1.Entities
     {
         private String duration;
         private readonly FileInfo fileInfo;
+        private StorageItemThumbnail Thumbnail;
+        public BitmapImage thumbnailImage;
 
         public AppFile(String location)
         {
@@ -16,6 +21,14 @@ namespace UWP1.Entities
                 throw new ArgumentException("Invalid file location.");
 
             this.fileInfo = new FileInfo(location);
+        }
+
+        private async void setThumbnail()
+        {
+            StorageFile file = await StorageFile.GetFileFromPathAsync(this.fileInfo.FullName);
+            this.Thumbnail = await file.GetThumbnailAsync(ThumbnailMode.SingleItem);
+            this.thumbnailImage = new BitmapImage();
+            this.thumbnailImage.SetSource(this.Thumbnail);
         }
 
         public FileStream getFileReadPointer()

@@ -9,6 +9,10 @@ using Windows.UI.Xaml.Media;
 using UWP1.Helpers;
 using UWP1.Entities;
 using System.IO;
+using Windows.Storage;
+using Windows.UI.Composition;
+using Windows.Storage.FileProperties;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -20,6 +24,7 @@ namespace UWP1
     public sealed partial class MainPage : Page
     {
         private String selectedColor = "defaultBackgroundGV1";
+        private AppFolder selectedFolder = null;
         private List<AppFolder> openedAppFolders = new List<AppFolder>();
         private AppDataStorage appDataStorage = new AppDataStorage();
         private Windows.UI.Color defaultBackgroundGV1 = Windows.UI.Colors.BlueViolet;
@@ -167,30 +172,56 @@ namespace UWP1
             if ((AppFolder)(sender as ListView).SelectedItem == null)
                 return;
 
-            AppFolder selectedFolder = (AppFolder) (sender as ListView).SelectedItem;
-            this.loadFilesIntoGrid(selectedFolder);
+            this.selectedFolder = (AppFolder) (sender as ListView).SelectedItem;
+            this.loadFilesIntoGrid(this.selectedFolder);
         }
 
         private async void loadFilesIntoGrid(AppFolder appFolder)
         {
             // get files from app folder and display in grid view
             // grid view users vlc media element library to play videos
-            List<String> allFiles = await appFolder.GetFiles();
-            List<AppFile> appFiles = new List<AppFile>();
-            foreach(String location in allFiles)
-            {
-                if (AppFolder.allowedFileTypes.Contains(new FileInfo(location).Extension))
-                {
-                    AppFile newAppFile = new AppFile(location);
-                    // if (await newAppFile.loadVideoProps())
-                    // some issue in commented if statement above. causing ui to stutter
-                    // when fixed change text block binding in MainPage.xaml to getNameWithDuration
-                    appFiles.Add(newAppFile);
-                }
-            }
-
+            List<AppFile> appFiles = await appFolder.GetFiles();
             this.GV1.ItemsSource = null;
             this.GV1.ItemsSource = appFiles;
+        }
+
+        private void GV1_MediaElementLoaded(object sender, RoutedEventArgs e)
+        {
+            this.setVideoThumbnail(sender as MediaElement);
+        }
+
+        private void MediaElement_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            this.setVideoSource(sender as MediaElement);
+        }
+
+        private void MediaElement_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            (sender as MediaElement).Source = null;
+        }
+
+        private async void setVideoThumbnail(MediaElement mediaElement)
+        {
+            if (this.selectedFolder == null)
+                return;
+
+            StorageFile fileToPlay = await StorageFile.GetFileFromPathAsync(this.selectedFolder.getLocation() + @"\" + mediaElement.Name);
+            StorageItemThumbnail Thumbnail = await fileToPlay.GetThumbnailAsync(ThumbnailMode.SingleItem);
+            BitmapImage thumbnailImage = new BitmapImage();
+            thumbnailImage.SetSource(Thumbnail);
+            // remove source
+            mediaElement.Source = null;
+            mediaElement.PosterSource = thumbnailImage;
+        }
+
+        private async void setVideoSource(MediaElement mediaElement)
+        {
+            if (mediaElement.Source != null)
+                return;
+
+            StorageFile fileToPlay = await StorageFile.GetFileFromPathAsync(this.selectedFolder.getLocation() + @"\" + mediaElement.Name);
+            var stream = await fileToPlay.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            mediaElement.SetSource(stream, fileToPlay.ContentType);
         }
     }
 }
