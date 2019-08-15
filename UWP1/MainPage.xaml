@@ -97,9 +97,6 @@
                                       PointerEntered="MediaElement_PointerEntered"
                                       PosterSource="Assets/Square150x150Logo.scale-200.png" >
                         </MediaElement>
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center">
-                        </StackPanel>
                         <TextBlock Text="{x:Bind getName(x:False)}" TextAlignment="Center" TextWrapping="WrapWholeWords"/>
                     </StackPanel>
                 </DataTemplate>

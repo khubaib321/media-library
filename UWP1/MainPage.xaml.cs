@@ -197,7 +197,10 @@ namespace UWP1
 
         private void MediaElement_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            (sender as MediaElement).Source = null;
+            MediaElement mediaElement = sender as MediaElement;
+            Debug.WriteLine(mediaElement.CurrentState);
+            if (mediaElement.CurrentState == MediaElementState.Closed || mediaElement.CurrentState == MediaElementState.Stopped)
+                mediaElement.Source = null;
         }
 
         private async void setVideoThumbnail(MediaElement mediaElement)
@@ -209,16 +212,14 @@ namespace UWP1
             StorageItemThumbnail Thumbnail = await fileToPlay.GetThumbnailAsync(ThumbnailMode.SingleItem);
             BitmapImage thumbnailImage = new BitmapImage();
             thumbnailImage.SetSource(Thumbnail);
-            // remove source
-            mediaElement.Source = null;
             mediaElement.PosterSource = thumbnailImage;
         }
 
         private async void setVideoSource(MediaElement mediaElement)
         {
-            if (mediaElement.Source != null)
+            if (mediaElement.CurrentState != MediaElementState.Closed && mediaElement.CurrentState != MediaElementState.Stopped)
                 return;
-
+            // if video was closed or stopped
             StorageFile fileToPlay = await StorageFile.GetFileFromPathAsync(this.selectedFolder.getLocation() + @"\" + mediaElement.Name);
             var stream = await fileToPlay.OpenAsync(Windows.Storage.FileAccessMode.Read);
             mediaElement.SetSource(stream, fileToPlay.ContentType);
