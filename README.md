@@ -1,2 +1,2 @@
 # Universal Windows Application (UWP)
-First test app on uwp platform.
+First test app on UWP.
